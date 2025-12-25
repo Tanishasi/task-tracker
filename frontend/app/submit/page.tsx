@@ -86,16 +86,15 @@ export default function SubmitInput() {
                     required
                     className="bg-input border-border text-foreground placeholder:text-muted-foreground focus:border-primary min-h-40 resize-none"
                   />
-                  <p className="text-xs text-muted-foreground">
+                  {/* <p className="text-xs text-muted-foreground">
                     The AI will automatically categorize this as an issue, event, log, task, incident, or note
-                  </p>
+                  </p> */}
                 </div>
 
                 {error && <p className="text-sm text-destructive">{error}</p>}
 
                 {/* Info Box */}
                 <div className="p-4 bg-primary/5 border border-primary/20 rounded-lg space-y-2">
-                  <p className="text-sm font-medium text-primary">What happens next?</p>
          
                 </div>
 
