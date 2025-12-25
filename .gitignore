@@ -1,0 +1,26 @@
+# Backend
+backend/.env
+backend/.env.*
+backend/app.db
+backend/.venv/
+backend/__pycache__/
+backend/**/*.pyc
+
+# Frontend
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/.env*
+frontend/.vercel/
+
+# General
+node_modules/
+.next/
+out/
+build/
+.env
+.env.*
+.vercel/
+.DS_Store
+*.log
