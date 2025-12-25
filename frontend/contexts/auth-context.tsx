@@ -7,6 +7,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import { apiClient, type LoginResponse } from "@/lib/api-client"
 
 const STORAGE_KEY = "input-dash-auth"
+const DEMO_MODE = process.env.NEXT_PUBLIC_DEMO_MODE !== "false"
 
 type StoredAuth = {
   token: string
@@ -49,11 +50,15 @@ function writeStorage(data: StoredAuth | null) {
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [token, setToken] = useState<string | null>(null)
-  const [email, setEmail] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [token, setToken] = useState<string | null>(DEMO_MODE ? "demo-token" : null)
+  const [email, setEmail] = useState<string | null>(DEMO_MODE ? "demo@local" : null)
+  const [isLoading, setIsLoading] = useState(!DEMO_MODE)
 
   useEffect(() => {
+    if (DEMO_MODE) {
+      return
+    }
+
     const stored = readStorage()
     if (stored) {
       setToken(stored.token)
@@ -63,24 +68,41 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const logout = useCallback(() => {
+    if (DEMO_MODE) return
     setToken(null)
     setEmail(null)
     writeStorage(null)
   }, [])
 
   const setAuthState = useCallback((next: StoredAuth) => {
+    if (DEMO_MODE) {
+      setToken("demo-token")
+      setEmail("demo@local")
+      return
+    }
     setToken(next.token)
     setEmail(next.email)
     writeStorage(next)
   }, [])
 
   const login = useCallback(async (emailValue: string, password: string) => {
+    if (DEMO_MODE) {
+      const response = await apiClient.loginRequest(emailValue, password)
+      setToken(response.access_token)
+      setEmail(emailValue)
+      return response
+    }
     const response = await apiClient.loginRequest(emailValue, password)
     setAuthState({ token: response.access_token, email: emailValue })
     return response
   }, [setAuthState])
 
   const register = useCallback(async (emailValue: string, password: string) => {
+    if (DEMO_MODE) {
+      await apiClient.registerRequest(emailValue, password)
+      await login(emailValue, password)
+      return
+    }
     await apiClient.registerRequest(emailValue, password)
     await login(emailValue, password)
   }, [login])

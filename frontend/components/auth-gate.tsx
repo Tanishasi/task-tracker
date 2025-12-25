@@ -7,12 +7,15 @@ import { usePathname, useRouter } from "next/navigation"
 
 import { useAuth } from "@/contexts/auth-context"
 
+const DEMO_MODE = process.env.NEXT_PUBLIC_DEMO_MODE !== "false"
+
 export function AuthGate({ children }: { children: ReactNode }) {
   const { token, isLoading } = useAuth()
   const pathname = usePathname()
   const router = useRouter()
 
   useEffect(() => {
+    if (DEMO_MODE) return
     if (isLoading) return
     if (pathname === "/auth") return
     if (!token) {
@@ -20,6 +23,7 @@ export function AuthGate({ children }: { children: ReactNode }) {
     }
   }, [isLoading, pathname, router, token])
 
+  if (DEMO_MODE) return children
   if (isLoading) return null
   if (pathname !== "/auth" && !token) return null
 

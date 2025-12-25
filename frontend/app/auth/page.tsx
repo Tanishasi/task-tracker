@@ -2,7 +2,7 @@
 
 import type { FormEvent } from "react"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
@@ -13,6 +13,12 @@ import { useAuth } from "@/contexts/auth-context"
 export default function AuthPage() {
   const router = useRouter()
   const { login, register } = useAuth()
+
+  useEffect(() => {
+    if (process.env.NEXT_PUBLIC_DEMO_MODE !== "false") {
+      router.replace("/")
+    }
+  }, [router])
 
   const [mode, setMode] = useState<"login" | "register">("login")
   const [email, setEmail] = useState("")
