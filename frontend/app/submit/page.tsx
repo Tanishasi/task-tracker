@@ -96,12 +96,7 @@ export default function SubmitInput() {
                 {/* Info Box */}
                 <div className="p-4 bg-primary/5 border border-primary/20 rounded-lg space-y-2">
                   <p className="text-sm font-medium text-primary">What happens next?</p>
-                  <ul className="text-sm text-primary/80 space-y-1">
-                    <li>• Your input will be analyzed by GPT-4o-mini</li>
-                    <li>• Automatically categorized and assigned a severity level</li>
-                    <li>• High-severity items will appear on the dashboard immediately</li>
-                    <li>• You can mark as done or delete anytime</li>
-                  </ul>
+         
                 </div>
 
                 {/* Submit Button */}
